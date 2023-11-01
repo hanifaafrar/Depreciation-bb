@@ -1,0 +1,54 @@
+<html>
+
+<head>
+  <script src="https://code.jquery.com/jquery-3.7.1.slim.min.js" integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8=" crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <h1>Asset Depreciation Calculator</h1>
+  <label for="depreciationCalculationDate">Depreciation Calculation Date:</label>
+  <input type="date" id="depreciationCalculationDate"><br><br>
+
+  <label for="life">Life (In years):</label>
+  <input min="1" type="number" id="life"><br><br>
+
+  <label for="invoiceDate">Invoice Date:</label>
+  <input type="date" id="invoiceDate"><br><br>
+
+  <label for="purchasedValue">Purchased Value:</label>
+  <input min="0" type="number" id="purchasedValue"><br><br>
+
+  <button id="calculate">Calculate</button><br><br>
+
+  <div id="results">
+    <h2>Results:</h2>
+    <p>Used Life: <span id="usedLife"></span></p>
+    <p>Remaining Life: <span id="remainingLife"></span></p>
+    <p>Per Day Depreciation Charge: <span id="perDayDepreciationCharge"></span></p>
+    <p>Depreciation Charge: <span id="depreciationCharge"></span></p>
+    <p>Book Value: <span id="bookValue"></span></p>
+  </div>
+
+  <script>
+    $('#calculate').click(function() {
+      var depreciationCalculationDate = new Date($('#depreciationCalculationDate').val());
+      var invoiceDate = new Date($('#invoiceDate').val());
+      var purchasedValue = parseFloat($('#purchasedValue').val());
+      var life = parseFloat($('#life').val());
+      var lifeInDays = life * 365;
+      var usedLife = Math.ceil((depreciationCalculationDate - invoiceDate) / (1000 * 3600 * 24));
+      var remainingLife = lifeInDays - usedLife;
+      var perDayDepreciationCharge = purchasedValue / lifeInDays;
+      var depreciationCharge = usedLife * perDayDepreciationCharge;
+      var bookValue = purchasedValue - depreciationCharge;
+      $('#usedLife').text(usedLife + " days");
+      $('#remainingLife').text(remainingLife + " days");
+      $('#perDayDepreciationCharge').text("$" + perDayDepreciationCharge.toFixed(2));
+      $('#depreciationCharge').text("$" + depreciationCharge.toFixed(2));
+      $('#bookValue').text("$" + bookValue.toFixed(2));
+    });
+  </script>
+</body>
+
+</html>
+
